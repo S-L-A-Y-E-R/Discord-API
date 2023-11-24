@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction } from "express";
 import { Model, Document } from "mongoose";
+import { Request, Response, NextFunction } from "express";
 import catchAsync from "../utils/catchAsync";
 import AppError from "../utils/appError";
 import APIFeatures from "../utils/apiFeatures";
 
-export const deleteOne = (Model: Model<Document>) =>
+export const deleteOne = <T extends Document>(Model: Model<T>) =>
   catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const doc = await Model.findByIdAndDelete(req.params.id);
 
@@ -18,7 +18,7 @@ export const deleteOne = (Model: Model<Document>) =>
     });
   });
 
-export const updateOne = (Model: Model<Document>) =>
+export const updateOne = <T extends Document>(Model: Model<T>) =>
   catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -37,7 +37,7 @@ export const updateOne = (Model: Model<Document>) =>
     });
   });
 
-export const createOne = (Model: Model<Document>) =>
+export const createOne = <T extends Document>(Model: Model<T>) =>
   catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const newDoc = await Model.create(req.body);
 
@@ -49,7 +49,10 @@ export const createOne = (Model: Model<Document>) =>
     });
   });
 
-export const getOne = (Model: Model<Document>, populateOptions: string) =>
+export const getOne = <T extends Document>(
+  Model: Model<T>,
+  populateOptions?: string
+) =>
   catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     let query: any = Model.findById(req.params.id);
 
@@ -69,7 +72,7 @@ export const getOne = (Model: Model<Document>, populateOptions: string) =>
     });
   });
 
-export const getAll = (Model: Model<Document>) =>
+export const getAll = <T extends Document>(Model: Model<T>) =>
   catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const features = new APIFeatures(Model.find(), req.query)
       .filter()
