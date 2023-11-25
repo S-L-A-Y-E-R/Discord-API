@@ -4,31 +4,43 @@ import { IServer } from "../types/modelTypes";
 import Channel from "./channelModel";
 import Member from "./memberModel";
 
-const serverSchema = new Schema({
-  name: {
-    type: String,
-    trim: true,
-  },
-  imageUrl: {
-    type: String,
-  },
-  inviteCode: {
-    type: String,
-  },
-  profileId: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Profile",
+const serverSchema = new Schema(
+  {
+    name: {
+      type: String,
+      trim: true,
     },
-  ],
-  createdAt: {
-    type: Date,
-    default: Date.now,
+    imageUrl: {
+      type: String,
+    },
+    inviteCode: {
+      type: String,
+    },
+    profileId: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Profile",
+      },
+    ],
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now,
+    },
   },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
+);
+
+serverSchema.virtual("members", {
+  ref: "Member",
+  localField: "_id",
+  foreignField: "serverId",
 });
 
 serverSchema.pre(/^findOneAndUpdate/, function (next) {
