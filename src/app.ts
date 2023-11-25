@@ -10,6 +10,7 @@ import compression from "compression";
 import AppError from "./utils/appError";
 import globalErrorHandler from "./controllers/errorController";
 import profileRoutes from "./routes/profileRoutes";
+import serverRoutes from "./routes/serverRoutes";
 
 const app = express();
 
@@ -53,6 +54,7 @@ if (process.env.NODE_ENV === "production") {
 
 //Global resources
 app.use("/api/v1/profiles", profileRoutes);
+app.use("/api/v1/servers", serverRoutes);
 
 // Handle requests from wrong urls
 app.all("*", (req, res, next) => {
