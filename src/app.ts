@@ -12,6 +12,7 @@ import globalErrorHandler from "./controllers/errorController";
 import profileRoutes from "./routes/profileRoutes";
 import serverRoutes from "./routes/serverRoutes";
 import memberRoutes from "./routes/memberRoutes";
+import channelRoutes from "./routes/channelRoutes";
 
 const app = express();
 
@@ -57,6 +58,7 @@ if (process.env.NODE_ENV === "production") {
 app.use("/api/v1/profiles", profileRoutes);
 app.use("/api/v1/servers", serverRoutes);
 app.use("/api/v1/members", memberRoutes);
+app.use("/api/v1/channels", channelRoutes);
 
 // Handle requests from wrong urls
 app.all("*", (req, res, next) => {

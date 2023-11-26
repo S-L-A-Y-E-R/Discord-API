@@ -5,9 +5,15 @@ import {
   deleteServer,
   getAllServers,
   createServer,
+  regenerateInviteCode,
 } from "../controllers/serverController";
+import memberRouter from "./memberRoutes";
 
 const router = express.Router();
+
+router.route("/:id/invite-code").patch(regenerateInviteCode);
+
+router.use("/:serverId/members", memberRouter);
 
 router.route("/").get(getAllServers).post(createServer);
 
