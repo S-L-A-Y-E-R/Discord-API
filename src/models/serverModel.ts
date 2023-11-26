@@ -65,7 +65,7 @@ serverSchema.pre(
   ) {
     this.populate({
       path: "members",
-      options: { sort: { role: -1 } },
+      options: { sort: { role: 1 } },
     }).populate({
       path: "channels",
       options: { sort: { createdAt: -1 } },
