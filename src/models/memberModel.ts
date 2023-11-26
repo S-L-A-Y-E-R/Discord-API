@@ -4,19 +4,20 @@ import { IMember } from "../types/modelTypes";
 const memberSchema = new Schema({
   serverId: [
     {
-      type: Schema.Types.ObjectId,
+      type: Schema.ObjectId,
       ref: "Server",
     },
   ],
   profileId: [
     {
-      type: Schema.Types.ObjectId,
+      type: Schema.ObjectId,
       ref: "Profile",
     },
   ],
   role: {
     type: String,
-    enum: ["admin", "moderator", "guuest"],
+    enum: ["admin", "moderator", "guest"],
+    default: "guest",
   },
   createdAt: {
     type: Date,
@@ -30,6 +31,13 @@ const memberSchema = new Schema({
 
 memberSchema.pre(/^findOneAndUpdate/, function (next) {
   this.set({ updatedAt: Date.now() });
+  next();
+});
+
+memberSchema.pre(/^find/, function (this: any, next) {
+  this.populate({
+    path: "profileId",
+  });
   next();
 });
 

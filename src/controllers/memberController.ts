@@ -1,14 +1,52 @@
+import { Request, Response, NextFunction } from "express";
 import Member from "../models/memberModel";
 import {
-  getAll,
   getOne,
   deleteOne,
   updateOne,
   createOne,
+  getAll,
 } from "./factoryHandler";
 import { IMember } from "../types/modelTypes";
+import catchAsync from "../utils/catchAsync";
+import APIFeatures from "../utils/apiFeatures";
 
-export const getAllMembers = getAll<IMember>(Member);
+export const getAllMembers = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { serverId, profileId, role } = req.query;
+
+    const filter: { [key: string]: any } = {};
+
+    if (role) {
+      filter.role = role;
+    }
+
+    if (profileId) {
+      filter.profileId = profileId;
+    }
+
+    if (serverId) {
+      filter.serverId = serverId;
+    }
+
+    // Use the filter object in the Member.find() query
+    let members = await Member.find();
+    members = members.filter((member: any) => {
+      for (const key in filter) {
+        if (member[key].toString() !== filter[key]) {
+          return false;
+        }
+      }
+      return true;
+    });
+
+    res.status(200).json({
+      status: "success",
+      results: members.length,
+      data: members,
+    });
+  }
+);
 
 export const getMember = getOne<IMember>(Member);
 

@@ -1,4 +1,11 @@
-import mongoose, { Model, Schema, model } from "mongoose";
+import mongoose, {
+  Model,
+  PopulatedDoc,
+  Query,
+  Schema,
+  model,
+  Document,
+} from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 import { IServer } from "../types/modelTypes";
 import Channel from "./channelModel";
@@ -15,10 +22,11 @@ const serverSchema = new Schema(
     },
     inviteCode: {
       type: String,
+      unique: true,
     },
     profileId: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.ObjectId,
         ref: "Profile",
       },
     ],
@@ -42,6 +50,29 @@ serverSchema.virtual("members", {
   localField: "_id",
   foreignField: "serverId",
 });
+
+serverSchema.virtual("channels", {
+  ref: "Channel",
+  localField: "_id",
+  foreignField: "serverId",
+});
+
+serverSchema.pre(
+  /^find/,
+  function (
+    this: Query<PopulatedDoc<Document<IServer>>, Document<IServer>>,
+    next
+  ) {
+    this.populate({
+      path: "members",
+      options: { sort: { role: -1 } },
+    }).populate({
+      path: "channels",
+      options: { sort: { createdAt: -1 } },
+    });
+    next();
+  }
+);
 
 serverSchema.pre(/^findOneAndUpdate/, function (next) {
   this.set({ updatedAt: Date.now() });

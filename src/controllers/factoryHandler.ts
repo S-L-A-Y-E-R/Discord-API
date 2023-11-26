@@ -44,7 +44,7 @@ export const createOne = <T extends Document>(Model: Model<T>) =>
     res.status(201).json({
       status: "success",
       data: {
-        date: newDoc,
+        data: newDoc,
       },
     });
   });
