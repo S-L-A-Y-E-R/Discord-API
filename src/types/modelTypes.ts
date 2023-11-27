@@ -34,3 +34,30 @@ export interface IMember extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface IMessage extends Document {
+  content: string;
+  fileUrl: string;
+  deleted: boolean;
+  memberId: string;
+  channelId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IConversation extends Document {
+  memberOneId: string;
+  memberTwoId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IDirectMessage extends Document {
+  content: string;
+  fileUrl: string;
+  memberId: string;
+  conversationId: string;
+  deleted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
