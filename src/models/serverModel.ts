@@ -68,7 +68,7 @@ serverSchema.pre(
       options: { sort: { role: 1 } },
     }).populate({
       path: "channels",
-      options: { sort: { createdAt: -1 } },
+      options: { sort: { createdAt: 1 } },
     });
     next();
   }
