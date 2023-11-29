@@ -1,14 +1,14 @@
 import { NextFunction, Request, Response } from "express";
-import Message from "../models/messageModel";
+import DirectMessage from "../models/directMessageModel";
 import catchAsync from "../utils/catchAsync";
 import AppError from "../utils/appError";
 
 export const createMessage = catchAsync(async (req: any, res, next) => {
   const newMessage = await (
-    await Message.create(req.body)
+    await DirectMessage.create(req.body)
   ).populate("memberId");
 
-  const channelKey = `chat:${req.body.channelId}:messages`;
+  const channelKey = `chat:${req.body.conversationId}:messages`;
 
   req.io.emit(channelKey, newMessage);
 
@@ -22,11 +22,15 @@ export const createMessage = catchAsync(async (req: any, res, next) => {
 
 export const updateMessage = catchAsync(
   async (req: any, res: Response, next: NextFunction) => {
-    const message = await Message.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const message = await DirectMessage.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+      }
+    );
 
-    const updateKey = `chat:${message?.channelId}:messages:update`;
+    const updateKey = `chat:${message?.conversationId}:messages:update`;
 
     req.io.emit(updateKey, message);
 
@@ -41,13 +45,13 @@ export const updateMessage = catchAsync(
 
 export const deleteMessage = catchAsync(
   async (req: any, res: Response, next: NextFunction) => {
-    const message = await Message.findByIdAndUpdate(
+    const message = await DirectMessage.findByIdAndUpdate(
       req.params.id,
       { deleted: true, content: "This message has been deleted" },
       { new: true }
     );
 
-    const updateKey = `chat:${message?.channelId}:messages:update`;
+    const updateKey = `chat:${message?.conversationId}:messages:update`;
 
     req.io.emit(updateKey, message);
 
@@ -65,16 +69,12 @@ export const getMessages = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const { channelId, memberId, page = 1, limit = 10 } = req.query;
+  const { conversationId, page = 1, limit = 10 } = req.query;
 
   const filter: { [key: string]: any } = {};
 
-  if (channelId) {
-    filter.channelId = channelId;
-  }
-
-  if (memberId) {
-    filter.memberId = memberId;
+  if (conversationId) {
+    filter.conversationId = conversationId;
   }
 
   const options = {
@@ -84,7 +84,7 @@ export const getMessages = async (
   };
 
   try {
-    const messages = await Message.paginate(filter, options);
+    const messages = await DirectMessage.paginate(filter, options);
 
     res.status(200).json({
       status: "success",

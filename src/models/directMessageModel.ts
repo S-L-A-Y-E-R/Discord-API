@@ -1,5 +1,6 @@
-import { model, Schema, Model } from "mongoose";
-import { IDirectMessage } from "../types/modelTypes";
+import { model, PopulatedDoc, Query, Schema, Document } from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
+import { IDirectMessage, IDirectMessageModel } from "../types/modelTypes";
 
 const directMessageSchema = new Schema({
   content: {
@@ -31,12 +32,30 @@ const directMessageSchema = new Schema({
   },
 });
 
+directMessageSchema.pre(
+  /^find/,
+  function (
+    this: Query<
+      PopulatedDoc<Document<IDirectMessage>>,
+      Document<IDirectMessage>
+    >,
+    next
+  ) {
+    this.populate({
+      path: "memberId",
+    });
+    next();
+  }
+);
+
 directMessageSchema.pre(/^findOneAndUpdate/, function (next) {
   this.set({ updatedAt: Date.now() });
   next();
 });
 
-const DirectMessage: Model<IDirectMessage> = model<IDirectMessage>(
+directMessageSchema.plugin(mongoosePaginate);
+
+const DirectMessage = model<IDirectMessage, IDirectMessageModel>(
   "DirectMessage",
   directMessageSchema
 );

@@ -29,7 +29,6 @@ export const getAllMembers = catchAsync(
       filter.serverId = serverId;
     }
 
-    // Use the filter object in the Member.find() query
     let members = await Member.find();
     members = members.filter((member: any) => {
       for (const key in filter) {
