@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import { Document, Model } from "mongoose";
 
 export interface IProfile extends Document {
   userId: string;
@@ -39,10 +39,14 @@ export interface IMessage extends Document {
   content: string;
   fileUrl: string;
   deleted: boolean;
-  memberId: string;
+  memberId: string[];
   channelId: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface IMessageModel extends Model<IMessage> {
+  paginate(query?: any, options?: any, callback?: any): Promise<any>;
 }
 
 export interface IConversation extends Document {
@@ -55,9 +59,13 @@ export interface IConversation extends Document {
 export interface IDirectMessage extends Document {
   content: string;
   fileUrl: string;
-  memberId: string;
+  memberId: string[];
   conversationId: string;
   deleted: boolean;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface IDirectMessageModel extends Model<IDirectMessage> {
+  paginate(query?: any, options?: any, callback?: any): Promise<any>;
 }

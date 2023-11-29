@@ -1,5 +1,6 @@
-import { Model, Schema, model } from "mongoose";
-import { IMessage } from "../types/modelTypes";
+import { Schema, model, Document, Query, PopulatedDoc } from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
+import { IMessage, IMessageModel } from "../types/modelTypes";
 
 const messageSchema = new Schema({
   content: {
@@ -36,6 +37,21 @@ messageSchema.pre(/^findOneAndUpdate/, function (next) {
   next();
 });
 
-const Message: Model<IMessage> = model<IMessage>("Message", messageSchema);
+messageSchema.pre(
+  /^find/,
+  function (
+    this: Query<PopulatedDoc<Document<IMessage>>, Document<IMessage>>,
+    next
+  ) {
+    this.populate({
+      path: "memberId",
+    });
+    next();
+  }
+);
+
+messageSchema.plugin(mongoosePaginate);
+
+const Message = model<IMessage, IMessageModel>("Message", messageSchema);
 
 export default Message;

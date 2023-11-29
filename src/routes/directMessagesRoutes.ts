@@ -8,9 +8,9 @@ import {
 
 const router = express.Router();
 
-router.route("/socket-direct").post(createMessage);
+router.route("/socket").post(createMessage);
 
-router.route("/socket-direct/:id").patch(updateMessage).delete(deleteMessage);
+router.route("/socket/:id").patch(updateMessage).delete(deleteMessage);
 
 router.route("/").get(getMessages);
 

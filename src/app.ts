@@ -17,6 +17,7 @@ import channelRoutes from "./routes/channelRoutes";
 import conversationRoutes from "./routes/conversationRoutes";
 import configureSocket from "./utils/socketIo";
 import messageRoutes from "./routes/messageRoutes";
+import directMessages from "./routes/directMessagesRoutes";
 
 const app = express();
 
@@ -73,6 +74,7 @@ app.use("/api/v1/members", memberRoutes);
 app.use("/api/v1/channels", channelRoutes);
 app.use("/api/v1/conversations", conversationRoutes);
 app.use("/api/v1/messages", messageRoutes);
+app.use("/api/v1/direct-messages", directMessages);
 
 // Handle requests from wrong urls
 app.all("*", (req, res, next) => {
