@@ -1,4 +1,5 @@
 import Channel from "../models/channelModel";
+import { IChannel } from "../types/modelTypes";
 import {
   getAll,
   getOne,
@@ -7,12 +8,12 @@ import {
   createOne,
 } from "./factoryHandler";
 
-export const getAllChannels = getAll(Channel);
+export const getAllChannels = getAll<IChannel>(Channel);
 
-export const getChannel = getOne(Channel);
+export const getChannel = getOne<IChannel>(Channel);
 
-export const deleteChannel = deleteOne(Channel);
+export const deleteChannel = deleteOne<IChannel>(Channel);
 
-export const updateChannel = updateOne(Channel);
+export const updateChannel = updateOne<IChannel>(Channel);
 
-export const createChannel = createOne(Channel);
+export const createChannel = createOne<IChannel>(Channel);

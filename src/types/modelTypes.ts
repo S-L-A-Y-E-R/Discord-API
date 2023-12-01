@@ -19,7 +19,7 @@ export interface IServer extends Document {
 }
 
 export interface IChannel extends Document {
-  serverId: string[];
+  serverId: string;
   name: string;
   type: string;
   profileId: string[];
@@ -28,8 +28,8 @@ export interface IChannel extends Document {
 }
 
 export interface IMember extends Document {
-  serverId: string[];
-  profileId: string[];
+  serverId: string;
+  profileId: string;
   role: string;
   createdAt: Date;
   updatedAt: Date;
@@ -39,7 +39,7 @@ export interface IMessage extends Document {
   content: string;
   fileUrl: string;
   deleted: boolean;
-  memberId: string[];
+  memberId: string;
   channelId: string;
   createdAt: Date;
   updatedAt: Date;
@@ -59,7 +59,7 @@ export interface IConversation extends Document {
 export interface IDirectMessage extends Document {
   content: string;
   fileUrl: string;
-  memberId: string[];
+  memberId: string;
   conversationId: string;
   deleted: boolean;
   createdAt: Date;

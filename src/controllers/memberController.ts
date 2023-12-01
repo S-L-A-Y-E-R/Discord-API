@@ -1,15 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import Member from "../models/memberModel";
-import {
-  getOne,
-  deleteOne,
-  updateOne,
-  createOne,
-  getAll,
-} from "./factoryHandler";
+import { getOne, deleteOne, updateOne, createOne } from "./factoryHandler";
 import { IMember } from "../types/modelTypes";
 import catchAsync from "../utils/catchAsync";
-import APIFeatures from "../utils/apiFeatures";
 
 export const getAllMembers = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {

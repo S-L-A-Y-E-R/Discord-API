@@ -2,18 +2,14 @@ import { Schema, model, Model } from "mongoose";
 import { IMember } from "../types/modelTypes";
 
 const memberSchema = new Schema({
-  serverId: [
-    {
-      type: Schema.ObjectId,
-      ref: "Server",
-    },
-  ],
-  profileId: [
-    {
-      type: Schema.ObjectId,
-      ref: "Profile",
-    },
-  ],
+  serverId: {
+    type: Schema.ObjectId,
+    ref: "Server",
+  },
+  profileId: {
+    type: Schema.ObjectId,
+    ref: "Profile",
+  },
   role: {
     type: String,
     enum: ["admin", "moderator", "guest"],

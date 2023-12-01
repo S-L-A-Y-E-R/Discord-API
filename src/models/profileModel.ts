@@ -1,4 +1,5 @@
 import { Schema, model, Model } from "mongoose";
+const validator = require("validator");
 import { IProfile } from "../types/modelTypes";
 
 const profileSchema = new Schema({
@@ -16,6 +17,7 @@ const profileSchema = new Schema({
   email: {
     type: String,
     unique: true,
+    validator: [validator.isEmail, "Please provide a valid email"],
   },
   createdAt: {
     type: Date,

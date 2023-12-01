@@ -4,14 +4,12 @@ import {
   getMessages,
   updateMessage,
   deleteMessage,
-} from "../controllers/directMessagesController";
+} from "../controllers/messageController";
 
 const router = express.Router();
 
-router.route("/socket-direct").post(createMessage);
+router.route("/").post(createMessage).get(getMessages);
 
-router.route("/socket-direct/:id").patch(updateMessage).delete(deleteMessage);
-
-router.route("/").get(getMessages);
+router.route("/:id").patch(updateMessage).delete(deleteMessage);
 
 export default router;

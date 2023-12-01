@@ -1,17 +1,15 @@
 import express from "express";
 import {
-  createMessage,
-  getMessages,
-  updateMessage,
-  deleteMessage,
+  createDirectMessage,
+  getDirectMessages,
+  updateDirectMessage,
+  deleteDirectMessage,
 } from "../controllers/directMessagesController";
 
 const router = express.Router();
 
-router.route("/socket").post(createMessage);
+router.route("/").post(createDirectMessage).get(getDirectMessages);
 
-router.route("/socket/:id").patch(updateMessage).delete(deleteMessage);
-
-router.route("/").get(getMessages);
+router.route("/:id").patch(updateDirectMessage).delete(deleteDirectMessage);
 
 export default router;

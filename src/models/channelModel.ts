@@ -2,12 +2,10 @@ import { model, Schema, Model } from "mongoose";
 import { IChannel } from "../types/modelTypes";
 
 const channelSchema = new Schema({
-  serverId: [
-    {
-      type: Schema.ObjectId,
-      ref: "Server",
-    },
-  ],
+  serverId: {
+    type: Schema.ObjectId,
+    ref: "Server",
+  },
   name: {
     type: String,
     trim: true,
@@ -16,12 +14,10 @@ const channelSchema = new Schema({
     type: String,
     enum: ["text", "voice", "video"],
   },
-  profileId: [
-    {
-      type: Schema.ObjectId,
-      ref: "Profile",
-    },
-  ],
+  profileId: {
+    type: Schema.ObjectId,
+    ref: "Profile",
+  },
   createdAt: {
     type: Date,
     default: Date.now,

@@ -3,7 +3,7 @@ import DirectMessage from "../models/directMessageModel";
 import catchAsync from "../utils/catchAsync";
 import AppError from "../utils/appError";
 
-export const createMessage = catchAsync(async (req: any, res, next) => {
+export const createDirectMessage = catchAsync(async (req: any, res, next) => {
   const newMessage = await (
     await DirectMessage.create(req.body)
   ).populate("memberId");
@@ -20,7 +20,7 @@ export const createMessage = catchAsync(async (req: any, res, next) => {
   });
 });
 
-export const updateMessage = catchAsync(
+export const updateDirectMessage = catchAsync(
   async (req: any, res: Response, next: NextFunction) => {
     const message = await DirectMessage.findByIdAndUpdate(
       req.params.id,
@@ -43,11 +43,15 @@ export const updateMessage = catchAsync(
   }
 );
 
-export const deleteMessage = catchAsync(
+export const deleteDirectMessage = catchAsync(
   async (req: any, res: Response, next: NextFunction) => {
     const message = await DirectMessage.findByIdAndUpdate(
       req.params.id,
-      { deleted: true, content: "This message has been deleted" },
+      {
+        deleted: true,
+        content: "This message has been deleted",
+        fileUrl: "",
+      },
       { new: true }
     );
 
@@ -64,7 +68,7 @@ export const deleteMessage = catchAsync(
   }
 );
 
-export const getMessages = async (
+export const getDirectMessages = async (
   req: Request,
   res: Response,
   next: NextFunction

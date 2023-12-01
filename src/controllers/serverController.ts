@@ -1,14 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
-import {
-  getAll,
-  getOne,
-  updateOne,
-  deleteOne,
-  createOne,
-} from "./factoryHandler";
+import { getAll, getOne, updateOne, createOne } from "./factoryHandler";
 import Server from "../models/serverModel";
 import Channel from "../models/channelModel";
 import Member from "../models/memberModel";
+import Message from "../models/messageModel";
 import { IServer } from "../types/modelTypes";
 import catchAsync from "../utils/catchAsync";
 import AppError from "../utils/appError";
@@ -28,7 +23,12 @@ export const deleteServer = catchAsync(async (req, res, next) => {
     return next(new AppError("No server found with that ID", 404));
   }
 
-  await Channel.deleteMany({ serverId: server._id });
+  const channels = await Channel.find({ serverId: server._id });
+
+  channels.forEach(async (channel) => {
+    await Message.findOneAndDelete({ channelId: channel._id });
+    await Channel.findOneAndDelete({ _id: channel._id });
+  });
 
   await Member.deleteMany({ serverId: server._id });
 

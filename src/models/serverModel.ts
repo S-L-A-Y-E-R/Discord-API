@@ -1,11 +1,4 @@
-import mongoose, {
-  Model,
-  PopulatedDoc,
-  Query,
-  Schema,
-  model,
-  Document,
-} from "mongoose";
+import { Model, PopulatedDoc, Query, Schema, model, Document } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 import { IServer } from "../types/modelTypes";
 import Channel from "./channelModel";
