@@ -6,7 +6,11 @@ import * as http from "http";
 const configureSocket = (server: http.Server) => {
   const io = new Server(server, {
     cors: {
-      origin: ["https://admin.socket.io", "http://localhost:3000"],
+      origin: [
+        "https://admin.socket.io",
+        "http://localhost:3000",
+        "https://discord-website-production.up.railway.app/",
+      ],
       credentials: true,
     },
   });
