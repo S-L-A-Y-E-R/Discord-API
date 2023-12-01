@@ -5,7 +5,7 @@ const admin_ui_1 = require("@socket.io/admin-ui");
 const configureSocket = (server) => {
     const io = new socket_io_1.Server(server, {
         cors: {
-            origin: ["*"],
+            origin: "*",
             credentials: true,
         },
     });

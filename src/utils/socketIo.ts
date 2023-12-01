@@ -6,7 +6,7 @@ import * as http from "http";
 const configureSocket = (server: http.Server) => {
   const io = new Server(server, {
     cors: {
-      origin: ["*"],
+      origin: "*",
       credentials: true,
     },
   });
