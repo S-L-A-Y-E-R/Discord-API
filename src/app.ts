@@ -45,11 +45,7 @@ app.set("trust proxy", true);
 //Allow cors for all domains
 app.use(
   cors({
-    origin: [
-      "https://admin.socket.io",
-      "http://localhost:3000",
-      "https://discord-website-production.up.railway.app/",
-    ],
+    origin: "*",
     credentials: true,
   })
 );
